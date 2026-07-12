@@ -1,16 +1,20 @@
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $profileDir = Join-Path $env:USERPROFILE "whatsapp-automation-profile"
-$debugPort = 9222
+$envFile = Join-Path $root ".env"
 $pidFile = Join-Path $root ".running-pids.txt"
+$debugPort = 9222
+$testUiPort = 4545
 
-# ------------------------------------------------------------------
-# Which Node entry point to launch alongside Chrome:
-#   "server.js"    -> manual Send Line test console (Supabase OFF)
-#   "scheduler.js" -> real Supabase-driven scheduler
-# Switch this once you've finished testing and enabled Supabase.
-# ------------------------------------------------------------------
-$entryFile = "server.js"
+if (Test-Path $envFile) {
+    $envContent = Get-Content $envFile -Raw
+    if ($envContent -match "CHROME_DEBUG_PORT=(\d+)") {
+        $debugPort = [int]$Matches[1]
+    }
+    if ($envContent -match "TEST_UI_PORT=(\d+)") {
+        $testUiPort = [int]$Matches[1]
+    }
+}
 
 if (Test-Path $pidFile) { Remove-Item $pidFile }
 
@@ -36,24 +40,48 @@ $chromeProc = Start-Process -FilePath $chromePath `
 Write-Host "Waiting for Chrome to settle..."
 Start-Sleep -Seconds 4
 
-# --- Start the Node process (test console or scheduler) ---
-Write-Host "Starting $entryFile ..."
-$nodeProc = Start-Process -FilePath "node" `
-    -ArgumentList $entryFile `
+# --- Start the Node processes ---
+Write-Host "Starting server.js (local UI on port $testUiPort)..."
+$serverProc = Start-Process -FilePath "node" `
+    -ArgumentList "server.js" `
     -WorkingDirectory $root `
     -WindowStyle Minimized `
     -PassThru
-"node=$($nodeProc.Id)" | Out-File -FilePath $pidFile -Append -Encoding ascii
+"node=$($serverProc.Id)" | Out-File -FilePath $pidFile -Append -Encoding ascii
+
+# --- Check if Supabase keys are configured in .env ---
+$hasSupabase = $false
+if (Test-Path $envFile) {
+    $envContent = Get-Content $envFile -Raw
+    # Check if the variables are populated with something other than placeholder text
+    if ($envContent -match "SUPABASE_URL=https://[^\s]+" -and $envContent -match "SUPABASE_SERVICE_ROLE_KEY=[^y\s][^\s]+") {
+        $hasSupabase = $true
+    }
+}
+
+if ($hasSupabase) {
+    Write-Host "Supabase configured. Starting scheduler.js in background..." -ForegroundColor Green
+    $schedulerProc = Start-Process -FilePath "node" `
+        -ArgumentList "scheduler.js" `
+        -WorkingDirectory $root `
+        -WindowStyle Minimized `
+        -PassThru
+    "node=$($schedulerProc.Id)" | Out-File -FilePath $pidFile -Append -Encoding ascii
+} else {
+    Write-Host "Supabase credentials not configured in .env. Skipping scheduler.js." -ForegroundColor Yellow
+}
 
 Write-Host ""
 Write-Host "All started." -ForegroundColor Green
 Write-Host "  Chrome PID : $($chromeProc.Id)"
-Write-Host "  Node PID   : $($nodeProc.Id)  ($entryFile)"
+Write-Host "  Server PID : $($serverProc.Id) (server.js)"
+if ($hasSupabase) {
+    Write-Host "  Scheduler PID : $($schedulerProc.Id) (scheduler.js)"
+}
 Write-Host ""
-if ($entryFile -eq "server.js") {
-    Write-Host "Open http://localhost:4545 for the Send Line test console." -ForegroundColor Cyan
-} else {
-    Write-Host "Scheduler is running in the background, polling Supabase." -ForegroundColor Cyan
+Write-Host "Open http://localhost:$testUiPort for the Direct Mode console." -ForegroundColor Cyan
+if ($hasSupabase) {
+    Write-Host "Scheduler is running in the background, polling Supabase for messages." -ForegroundColor Cyan
 }
 Write-Host "Log into WhatsApp Web in the Chrome window if this is the first run."
-Write-Host "Run stop-all.bat when you're done."
+Write-Host "Run stop-all.bat when you're done to shut down all processes."

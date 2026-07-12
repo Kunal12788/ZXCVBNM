@@ -75,3 +75,5 @@ Call log:
 [2026-07-12T16:03:10.606Z] [INFO] [test-ui] Sent -> "KI" (delivery_status: unconfirmed)
 [2026-07-12T17:28:33.718Z] [INFO] Test console running at http://localhost:4545
 [2026-07-12T17:28:33.728Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T17:52:20.357Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T17:52:20.360Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
