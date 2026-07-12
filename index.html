@@ -265,6 +265,20 @@
   const logList = document.getElementById('logList');
   const emptyState = document.getElementById('emptyState');
 
+  // Detect if running locally or in cloud queue mode
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  
+  // Set UI texts dynamically based on mode
+  const eyebrowEl = document.querySelector('.eyebrow');
+  const subEl = document.querySelector('.sub');
+  if (isLocal) {
+    eyebrowEl.textContent = 'Direct Mode (Bypassing Supabase)';
+    subEl.textContent = 'Type a contact number and a message. This sends directly to WhatsApp Web through your linked local Chrome session.';
+  } else {
+    eyebrowEl.textContent = 'Queue System via Supabase';
+    subEl.textContent = 'Type a contact number and a message. This will be queued in your Supabase database and delivered by your local runner.';
+  }
+
   function tickIcon(status) {
     const color = {
       pending: 'var(--signal-idle)',
@@ -319,8 +333,11 @@
     sendBtn.textContent = 'Sending...';
     const entry = addEntry({ contact, message, status: 'pending' });
 
+    // Choose target endpoint based on hostname
+    const apiEndpoint = isLocal ? 'http://localhost:4545/api/send' : '/api/send';
+
     try {
-      const res = await fetch('/api/send', {
+      const res = await fetch(apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contact, message, phone: phone || undefined }),
