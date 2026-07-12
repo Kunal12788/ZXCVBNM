@@ -1,0 +1,24 @@
+{
+  "name": "whatsapp-supabase-automation",
+  "version": "1.0.0",
+  "description": "Single-user WhatsApp Web automation driven by Supabase schedule",
+  "main": "scheduler.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node scheduler.js",
+    "add": "node add-message.js",
+    "test-ui": "node server.js",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "playwright": "^1.47.0"
+  },
+  "devDependencies": {
+    "vite": "^8.1.4"
+  }
+}

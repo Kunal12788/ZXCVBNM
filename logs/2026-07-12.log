@@ -1,0 +1,77 @@
+[2026-07-12T15:07:20.149Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:07:20.171Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:22:50.354Z] [INFO] [test-ui] Manual send requested -> "Test Contact"
+[2026-07-12T15:23:48.950Z] [ERROR] [test-ui] Failed -> "Test Contact": WhatsApp Web search box not found. Make sure you're logged in (scan the QR code) in the Chrome window opened by launch-chrome.bat.
+[2026-07-12T15:24:29.033Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:24:29.048Z] [ERROR] [test-ui] Failed -> "KUNAL": No browser context found. Is Chrome open via launch-chrome.bat?
+[2026-07-12T15:24:40.030Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:24:40.033Z] [ERROR] [test-ui] Failed -> "KUNAL": No browser context found. Is Chrome open via launch-chrome.bat?
+[2026-07-12T15:25:29.333Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:25:29.370Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:25:55.364Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:26:56.076Z] [ERROR] [test-ui] Failed -> "KUNAL": WhatsApp Web search box not found. Make sure you're logged in (scan the QR code) in the Chrome window opened by launch-chrome.bat.
+[2026-07-12T15:27:57.669Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:27:58.058Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:28:17.859Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:28:29.695Z] [ERROR] [test-ui] Failed -> "KUNAL": locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('span[title="KUNAL"]').first() to be visible[22m
+
+[2026-07-12T15:28:50.346Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:28:50.349Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:29:09.011Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:29:53.860Z] [ERROR] [test-ui] Failed -> "KUNAL": locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('span[title="KUNAL" i]').first() to be visible[22m
+
+[2026-07-12T15:31:22.490Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:31:22.518Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:31:45.422Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:32:46.051Z] [ERROR] [test-ui] Failed -> "KUNAL": WhatsApp Web search box not found. Make sure you're logged in (scan the QR code) in the Chrome window opened by launch-chrome.bat.
+[2026-07-12T15:33:27.110Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:33:27.113Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:33:48.476Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:33:50.004Z] [WARN] Found 2 contacts matching "KUNAL". Attempting to match by phone number.
+[2026-07-12T15:33:58.836Z] [ERROR] [test-ui] Failed -> "KUNAL": Could not find a contact named "KUNAL" whose number matches 9836282432.
+[2026-07-12T15:36:56.047Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:36:56.056Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:37:16.601Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:37:28.005Z] [ERROR] [test-ui] Failed -> "KUNAL": locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('footer div[contenteditable="true"][aria-label="Type a message"]') to be visible[22m
+
+[2026-07-12T15:38:05.966Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:38:05.968Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:38:23.590Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:38:24.874Z] [INFO] Phone number provided (9836282432). Verifying contact info for matching search results...
+[2026-07-12T15:38:24.879Z] [INFO] Checking contact: "𝙺𝚄𝙽𝙰𝙻 😎"
+[2026-07-12T15:38:25.022Z] [INFO] Contact phone number: "Contactinfo𝙺𝚄𝙽𝙰𝙻+919836282432SearchMedia,linksanddocs0StarredmessagesMutenotificationsDisappearingmessagesOffAdvancedchatprivacyOffEncryptionMessagesareendtoendencrypted.Clicktoverify.AddtofavouritesAddtolistClearchatBlock𝙺𝚄𝙽𝙰𝙻Report𝙺𝚄𝙽𝙰𝙻Deletechat"
+[2026-07-12T15:38:25.026Z] [INFO] Checking contact: "‪Hi‬"
+[2026-07-12T15:38:29.188Z] [WARN] Could not read phone number for contact "‪Hi‬".
+[2026-07-12T15:38:29.189Z] [ERROR] [test-ui] Failed -> "KUNAL": Could not find a contact named "KUNAL" whose number matches 9836282432.
+[2026-07-12T15:39:51.279Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:39:51.662Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:40:11.084Z] [INFO] [test-ui] Manual send requested -> "KUNAL"
+[2026-07-12T15:40:12.074Z] [INFO] Phone number provided (9836282432). Verifying contact info for matching search results...
+[2026-07-12T15:40:12.080Z] [INFO] Checking contact: "𝙺𝚄𝙽𝙰𝙻 😎"
+[2026-07-12T15:40:17.470Z] [WARN] Could not read phone number for contact "𝙺𝚄𝙽𝙰𝙻 😎".
+[2026-07-12T15:40:17.472Z] [ERROR] [test-ui] Failed -> "KUNAL": Could not find a contact named "KUNAL" whose number matches 9836282432.
+[2026-07-12T15:49:59.150Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T15:49:59.160Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T15:50:18.059Z] [INFO] [test-ui] Manual send requested -> "9836282432"
+[2026-07-12T15:50:18.590Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-12T15:50:19.203Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-12T15:50:36.807Z] [WARN] Sent to "9836282432" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-12T15:50:36.871Z] [INFO] [test-ui] Sent -> "9836282432" (delivery_status: unconfirmed)
+[2026-07-12T15:51:50.132Z] [INFO] [test-ui] Manual send requested -> "KI"
+[2026-07-12T15:51:50.252Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-12T15:51:50.830Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-12T15:52:07.206Z] [WARN] Sent to "KI" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-12T15:52:07.255Z] [INFO] [test-ui] Sent -> "KI" (delivery_status: unconfirmed)
+[2026-07-12T16:02:50.340Z] [INFO] [test-ui] Manual send requested -> "KI"
+[2026-07-12T16:02:50.508Z] [INFO] Searching for chat using: "6290763791"...
+[2026-07-12T16:02:51.080Z] [INFO] Found contact row matching search: "BRO 😎😎". Clicking to open chat...
+[2026-07-12T16:03:10.565Z] [WARN] Sent to "KI" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-12T16:03:10.606Z] [INFO] [test-ui] Sent -> "KI" (delivery_status: unconfirmed)
+[2026-07-12T17:28:33.718Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T17:28:33.728Z] [INFO] Supabase is NOT used here — this sends directly from what you type.

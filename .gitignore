@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Local env & config
+.env
+.running-pids.txt
+
+# Production build output (Vercel builds this automatically)
+dist/
+
+# Chrome User Profile (MUST NEVER BE COMMITTED)
+chrome-profile/
+chrome-error.log
+
+# Scratch scripts & temporary test artifacts
+scratch-*.js
+info-panel.png
+search-number-results.png
+*.webp
+*.png
