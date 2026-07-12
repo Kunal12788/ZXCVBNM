@@ -226,9 +226,9 @@
 </head>
 <body>
   <div class="console">
-    <div class="eyebrow">Supabase disabled — direct send</div>
+    <div class="eyebrow">Queue System via Supabase</div>
     <h1>Send Line</h1>
-    <p class="sub">Type a contact and a message. This sends straight to WhatsApp Web through your linked Chrome session — nothing touches Supabase from here.</p>
+    <p class="sub">Type a contact number and a message. This will be queued in your Supabase database and delivered by your local runner.</p>
 
     <div class="panel">
       <form id="sendForm">
@@ -320,7 +320,7 @@
     const entry = addEntry({ contact, message, status: 'pending' });
 
     try {
-      const res = await fetch('http://localhost:4545/api/send', {
+      const res = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contact, message, phone: phone || undefined }),
