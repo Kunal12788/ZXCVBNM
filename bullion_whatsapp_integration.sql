@@ -65,8 +65,8 @@ begin
   -- Loop through active customers to check if they are due for an update
   for cust in select * from bullion_whatsapp_customers where is_active = true loop
     
-    -- Determine the time interval based on Priority
-    case cust.priority
+    -- Determine the time interval based on Priority (trimmed and case-insensitive for safety)
+    case lower(trim(both from cust.priority))
       when 'high' then time_interval := interval '45 minutes';
       when 'medium' then time_interval := interval '2 hours';
       when 'low' then time_interval := interval '4 hours';
