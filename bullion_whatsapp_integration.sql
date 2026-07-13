@@ -53,14 +53,26 @@ returns void as $$
 declare
   current_gold numeric;
   current_silver numeric;
+  latest_timestamp timestamptz;
   cust record;
   time_interval interval;
   price_changed boolean;
   message_text text;
 begin
-  -- Fetch current live prices from your existing bullion_rates table
-  select price into current_gold from bullion_rates where item = 'gold_995_100gms' order by created_at desc limit 1;
-  select price into current_silver from bullion_rates where item = 'silver_999_1kg' order by created_at desc limit 1;
+  -- 1. Find the latest upload timestamp in the rates table (most recent row)
+  select created_at into latest_timestamp from bullion_rates order by id desc limit 1;
+
+  -- 2. Fetch Gold and Silver prices matching this exact timestamp (same batch upload)
+  select price into current_gold from bullion_rates where item = 'gold_995_100gms' and created_at = latest_timestamp limit 1;
+  select price into current_silver from bullion_rates where item = 'silver_999_1kg' and created_at = latest_timestamp limit 1;
+
+  -- 3. Fallback: if either rate was not in the same batch, grab its latest independent price
+  if current_gold is null then
+    select price into current_gold from bullion_rates where item = 'gold_995_100gms' order by id desc limit 1;
+  end if;
+  if current_silver is null then
+    select price into current_silver from bullion_rates where item = 'silver_999_1kg' order by id desc limit 1;
+  end if;
 
   -- Loop through active customers to check if they are due for an update
   for cust in select * from bullion_whatsapp_customers where is_active = true loop
