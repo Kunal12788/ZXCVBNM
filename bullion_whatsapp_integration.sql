@@ -67,7 +67,7 @@ begin
     
     -- Determine the time interval based on Priority (trimmed and case-insensitive for safety)
     case lower(trim(both from cust.priority))
-      when 'high' then time_interval := interval '45 minutes';
+      when 'high' then time_interval := interval '5 minutes';
       when 'medium' then time_interval := interval '2 hours';
       when 'low' then time_interval := interval '4 hours';
       else time_interval := interval '2 hours';
@@ -180,10 +180,10 @@ select cron.unschedule('check-bullion-prices') where exists (select 1 from cron.
 select cron.unschedule('morning-greeting') where exists (select 1 from cron.job where jobname = 'morning-greeting');
 select cron.unschedule('night-greeting') where exists (select 1 from cron.job where jobname = 'night-greeting');
 
--- 1. Check price updates every 15 minutes
+-- 1. Check price updates every 5 minutes
 select cron.schedule(
   'check-bullion-prices',
-  '*/15 * * * *',
+  '*/5 * * * *',
   'select check_bullion_price_updates();'
 );
 
