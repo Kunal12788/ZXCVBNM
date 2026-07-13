@@ -3,7 +3,7 @@ const { chromium } = require("playwright");
 const logger = require("./logger");
 
 const DEBUG_PORT = process.env.CHROME_DEBUG_PORT || "9222";
-const DELIVERY_CONFIRM_TIMEOUT_MS = 15000;
+const DELIVERY_CONFIRM_TIMEOUT_MS = 5000; // Reduced from 15s to 5s to process multiple customers much faster
 
 let browserPromise = null;
 
@@ -121,22 +121,41 @@ function normalizeText(str) {
 // If phoneNumber is given, it clicks through each matching result and checks
 // the info panel until the number matches. If not given, or if none match,
 // falls back to the first result (and logs a warning if there were duplicates).
+async function clearSearchBox(page) {
+  try {
+    const searchBox = page.locator(SELECTORS.searchBox);
+    await searchBox.click();
+    // Use Ctrl+A and Backspace to ensure the input field is 100% empty
+    await page.keyboard.press("Control+A");
+    await page.keyboard.press("Backspace");
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(500); // Wait for the search state UI to reset
+  } catch (e) {
+    logger.warn(`Warning clearing search box: ${e.message}`);
+  }
+}
+
 async function openChat(page, contactName, phoneNumber) {
   const searchVal = phoneNumber || contactName; // Fallback to contactName if no phone is specified, but prefer phone
   if (!searchVal) {
     throw new Error("Search value (phone number or name) is required.");
   }
   
+  // 1. Clear any previous text completely to prevent query concatenation
+  await clearSearchBox(page);
+  
   const searchBox = page.locator(SELECTORS.searchBox);
   await searchBox.click();
-  await searchBox.fill("");
   
   // Clean search value: keep only digits if it looks like a phone number, otherwise use it raw
   const isPhone = /^\+?[\d\s-]+$/.test(searchVal);
   const cleanSearch = isPhone ? searchVal.replace(/[\s-]/g, "") : searchVal;
   
   logger.info(`Searching for chat using: "${cleanSearch}"...`);
-  await searchBox.pressSequentially(cleanSearch, { delay: 40 });
+  await searchBox.pressSequentially(cleanSearch, { delay: 30 });
+  
+  // 2. Wait 1.5 seconds for WhatsApp Web search results to update dynamically
+  await page.waitForTimeout(1500);
 
   // Wait for the contact list to update. We wait for any title span inside the grid to load.
   const contactSpan = page.locator('#pane-side span[title], [role="grid"] span[title]').first();
@@ -146,7 +165,7 @@ async function openChat(page, contactName, phoneNumber) {
 
   const title = await contactSpan.getAttribute("title");
   logger.info(`Found contact row matching search: "${title}". Clicking to open chat...`);
-  await contactSpan.click();
+  await contactSpan.click({ force: true });
 }
 
 // Waits for at least a single grey tick to appear on the most recent
@@ -206,9 +225,7 @@ async function sendMessage(contactName, messageText, phoneNumber = null) {
   }
 
   // Clear the search box so the next run starts clean
-  const searchBox = page.locator(SELECTORS.searchBox);
-  await searchBox.click().catch(() => {});
-  await page.keyboard.press("Escape").catch(() => {});
+  await clearSearchBox(page);
 
   return deliveryStatus;
 }
