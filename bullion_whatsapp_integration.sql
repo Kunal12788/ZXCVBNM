@@ -23,6 +23,9 @@ create table if not exists scheduled_messages (
   created_at timestamptz not null default now()
 );
 
+-- Ensure auto-incrementing queue order exists for strict sequential processing
+alter table scheduled_messages add column if not exists queue_order serial;
+
 create index if not exists idx_scheduled_messages_due
   on scheduled_messages (status, send_at, next_retry_at);
 
@@ -40,6 +43,9 @@ create table if not exists bullion_whatsapp_customers (
   is_active boolean not null default true,
   created_at timestamptz not null default now()
 );
+
+-- Ensure auto-incrementing serial number exists to prioritize customers
+alter table bullion_whatsapp_customers add column if not exists serial_no serial;
 
 -- Index for scanning active notifications
 create index if not exists idx_whatsapp_customers_notifications 
@@ -74,8 +80,8 @@ begin
     select price into current_silver from bullion_rates where item = 'silver_999_1kg' order by id desc limit 1;
   end if;
 
-  -- Loop through active customers to check if they are due for an update
-  for cust in select * from bullion_whatsapp_customers where is_active = true loop
+  -- Loop through active customers strictly sorted by their serial number
+  for cust in select * from bullion_whatsapp_customers where is_active = true order by serial_no asc loop
     
     -- Determine the time interval based on Priority (trimmed and case-insensitive for safety)
     case lower(trim(both from cust.priority))
@@ -88,38 +94,23 @@ begin
     -- Check if the priority interval has elapsed
     if (now() - cust.last_notification_sent_at) >= time_interval then
       price_changed := false;
-      message_text := 'Live Bullion Price Update: ' || chr(10);
 
-      -- Check Gold Change
+      -- Check Gold Change since last sent to this customer
       if current_gold is not null and (cust.last_gold_price_sent is null or cust.last_gold_price_sent <> current_gold) then
-        if cust.last_gold_price_sent is not null then
-          if current_gold > cust.last_gold_price_sent then
-            message_text := message_text || '📈 Gold increased to ₹' || current_gold || ' (was ₹' || cust.last_gold_price_sent || ')' || chr(10);
-          else
-            message_text := message_text || '📉 Gold decreased to ₹' || current_gold || ' (was ₹' || cust.last_gold_price_sent || ')' || chr(10);
-          end if;
-        else
-          message_text := message_text || '✨ Gold rate is now ₹' || current_gold || chr(10);
-        end if;
         price_changed := true;
       end if;
 
-      -- Check Silver Change
+      -- Check Silver Change since last sent to this customer
       if current_silver is not null and (cust.last_silver_price_sent is null or cust.last_silver_price_sent <> current_silver) then
-        if cust.last_silver_price_sent is not null then
-          if current_silver > cust.last_silver_price_sent then
-            message_text := message_text || '📈 Silver increased to ₹' || current_silver || ' (was ₹' || cust.last_silver_price_sent || ')' || chr(10);
-          else
-            message_text := message_text || '📉 Silver decreased to ₹' || current_silver || ' (was ₹' || cust.last_silver_price_sent || ')' || chr(10);
-          end if;
-        else
-          message_text := message_text || '✨ Silver rate is now ₹' || current_silver || chr(10);
-        end if;
         price_changed := true;
       end if;
 
-      -- If any price changed, insert into the whatsapp scheduled_messages queue
+      -- If any price changed, insert the identical uniform message text
       if price_changed then
+        message_text := 'Live Bullion Price Update: ' || chr(10) ||
+                        '✨ Gold rate: ₹' || current_gold || chr(10) ||
+                        '✨ Silver rate: ₹' || current_silver || chr(10);
+
         insert into scheduled_messages (
           contact_name,
           phone_number,

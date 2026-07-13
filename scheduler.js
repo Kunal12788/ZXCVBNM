@@ -18,7 +18,7 @@ async function fetchDueMessages() {
     .eq("status", "pending")
     .lte("send_at", nowIso)
     .or(`next_retry_at.is.null,next_retry_at.lte.${nowIso}`)
-    .order("send_at", { ascending: true });
+    .order("queue_order", { ascending: true });
 
   if (error) {
     logger.error(`Failed to fetch due messages: ${error.message}`);

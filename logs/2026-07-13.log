@@ -101,3 +101,24 @@
 [2026-07-13T06:50:42.473Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
 [2026-07-13T06:50:43.957Z] [WARN] Sent to "BANJO" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
 [2026-07-13T06:50:45.651Z] [INFO] Sent -> BANJO (delivery_status: unconfirmed)
+[2026-07-13T06:55:03.406Z] [INFO] 2 message(s) due.
+[2026-07-13T06:55:03.408Z] [INFO] Sending to "𝙺𝚄𝙽𝙰𝙻 😎" (attempt 1/4): Live Bullion Price Update: 
+📉 Gold decreased to ₹...
+[2026-07-13T06:55:03.975Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-13T06:55:04.530Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-13T06:55:12.676Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-13T06:55:22.682Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-13T06:55:23.399Z] [WARN] Sent to "𝙺𝚄𝙽𝙰𝙻 😎" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-13T06:55:24.476Z] [INFO] Sent -> 𝙺𝚄𝙽𝙰𝙻 😎 (delivery_status: unconfirmed)
+[2026-07-13T06:55:24.477Z] [INFO] Sending to "PRATIKSHA" (attempt 1/4): Live Bullion Price Update: 
+📉 Gold decreased to ₹...
+[2026-07-13T06:55:25.562Z] [INFO] Searching for chat using: "7044983628"...
+[2026-07-13T06:55:26.154Z] [INFO] Found contact row matching search: "Sister". Clicking to open chat...
+[2026-07-13T06:55:32.691Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-13T06:55:42.691Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-13T06:55:44.978Z] [WARN] Sent to "PRATIKSHA" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-13T06:55:46.356Z] [INFO] Sent -> PRATIKSHA (delivery_status: unconfirmed)
+[2026-07-13T06:56:42.742Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-13T06:57:59.823Z] [ERROR] Failed to fetch due messages: TypeError: fetch failed
+[2026-07-13T07:00:42.923Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-13T07:01:32.961Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
