@@ -77,3 +77,22 @@ Call log:
 [2026-07-12T17:28:33.728Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
 [2026-07-12T17:52:20.357Z] [INFO] Test console running at http://localhost:4545
 [2026-07-12T17:52:20.360Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T18:09:07.558Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T18:09:07.569Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T18:10:19.531Z] [INFO] Test console running at http://localhost:4545
+[2026-07-12T18:10:19.543Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-12T18:10:49.069Z] [INFO] [test-ui] Manual send requested -> "JHGF"
+[2026-07-12T18:10:49.699Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-12T18:10:50.475Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-12T18:11:06.388Z] [WARN] Sent to "JHGF" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-12T18:11:06.492Z] [INFO] [test-ui] Sent -> "JHGF" (delivery_status: unconfirmed)
+[2026-07-12T18:20:07.958Z] [INFO] [test-ui] Manual send requested -> "BFB"
+[2026-07-12T18:20:08.210Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-12T18:20:08.797Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-12T18:20:25.675Z] [WARN] Sent to "BFB" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-12T18:20:25.738Z] [INFO] [test-ui] Sent -> "BFB" (delivery_status: unconfirmed)
+[2026-07-12T18:20:30.299Z] [INFO] [test-ui] Manual send requested -> "BFB"
+[2026-07-12T18:20:30.404Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-12T18:20:31.096Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-12T18:20:46.561Z] [WARN] Sent to "BFB" but couldn't confirm delivery via tick icon within 15s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-12T18:20:46.632Z] [INFO] [test-ui] Sent -> "BFB" (delivery_status: unconfirmed)
