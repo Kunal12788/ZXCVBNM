@@ -40,6 +40,12 @@ async function processMessage(row) {
 
   const nowIso = new Date().toISOString();
 
+  // Mark as processing in DB immediately to lock the row and prevent duplicate processing
+  await updateRow(row.id, {
+    status: "processing",
+    last_attempt_at: nowIso,
+  });
+
   try {
     const deliveryStatus = await sendMessage(row.contact_name, row.message, row.phone_number);
     await updateRow(row.id, {
@@ -81,15 +87,29 @@ async function processMessage(row) {
   }
 }
 
+let isTicking = false;
+
 async function tick() {
-  const due = await fetchDueMessages();
-  if (due.length > 0) {
-    logger.info(`${due.length} message(s) due.`);
+  if (isTicking) {
+    logger.warn("Previous tick is still processing messages. Skipping this interval check.");
+    return;
   }
-  for (const row of due) {
-    // Sequential on purpose: WhatsApp Web can only do one search/send
-    // flow at a time in a single browser tab.
-    await processMessage(row);
+  isTicking = true;
+
+  try {
+    const due = await fetchDueMessages();
+    if (due.length > 0) {
+      logger.info(`${due.length} message(s) due.`);
+    }
+    for (const row of due) {
+      // Sequential on purpose: WhatsApp Web can only do one search/send
+      // flow at a time in a single browser tab.
+      await processMessage(row);
+    }
+  } catch (err) {
+    logger.error(`Error in scheduler tick: ${err.message}`);
+  } finally {
+    isTicking = false;
   }
 }
 
