@@ -194,9 +194,9 @@ select cron.schedule(
   $$select queue_greetings('morning');$$
 );
 
--- 3. Daily night greeting at 9:00 PM IST (3:30 PM UTC)
+-- 3. Daily night greeting at 10:00 PM IST (which is 4:30 PM UTC / 16:30 UTC)
 select cron.schedule(
   'night-greeting',
-  '30 15 * * *',
+  '30 16 * * *',
   $$select queue_greetings('night');$$
 );
