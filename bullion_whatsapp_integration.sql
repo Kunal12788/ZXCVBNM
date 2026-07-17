@@ -111,6 +111,13 @@ begin
                         '✨ Gold rate: ₹' || current_gold || chr(10) ||
                         '✨ Silver rate: ₹' || current_silver || chr(10);
 
+        -- Expire any old pending price updates for this customer so they only get the latest one
+        update scheduled_messages
+        set status = 'expired', error = 'Superseded by newer price update'
+        where contact_name = cust.contact_name
+          and status = 'pending'
+          and message like 'Live Bullion Price Update%';
+
         insert into scheduled_messages (
           contact_name,
           phone_number,
@@ -148,6 +155,12 @@ declare
   cust record;
   msg text;
 begin
+  -- Set any old pending greetings to expired before creating new ones
+  update scheduled_messages 
+  set status = 'expired', error = 'Superseded by new greeting'
+  where status = 'pending' 
+    and (message like '☀️ Good Morning%' or message like '🌙 Good Night%');
+
   for cust in select * from bullion_whatsapp_customers where is_active = true loop
     if greeting_type = 'morning' then
       msg := '☀️ Good Morning, ' || cust.contact_name || '! Have a profitable day ahead. Here are today''s starting bullion rates.';

@@ -10,6 +10,22 @@ function backoffMinutes(retryCount) {
   return Math.pow(2, retryCount);
 }
 
+async function expireOldMessages() {
+  const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString(); // 30 minutes ago
+  const { data, error } = await supabase
+    .from("scheduled_messages")
+    .update({ status: "expired", error: "Offline backlog cleanup" })
+    .eq("status", "pending")
+    .lt("send_at", cutoff)
+    .select("id");
+
+  if (error) {
+    logger.error(`Failed to expire old backlog messages: ${error.message}`);
+  } else if (data && data.length > 0) {
+    logger.info(`Cleaned up ${data.length} expired pending messages from offline backlog.`);
+  }
+}
+
 async function fetchDueMessages() {
   const nowIso = new Date().toISOString();
   const { data, error } = await supabase
@@ -97,6 +113,9 @@ async function tick() {
   isTicking = true;
 
   try {
+    // Clean up any stale backlog messages (e.g. from when the app was offline)
+    await expireOldMessages();
+
     const due = await fetchDueMessages();
     if (due.length > 0) {
       logger.info(`${due.length} message(s) due.`);
