@@ -32,7 +32,34 @@ alter table scheduled_messages add column if not exists queue_order serial;
 create index if not exists idx_scheduled_messages_due
   on scheduled_messages (status, send_at, next_retry_at);
 
--- 2. Create the NEW, isolated customer subscriptions table
+-- 2. Create the message templates table
+create table if not exists bullion_whatsapp_templates (
+  language text primary key,                        -- Language key in lowercase (e.g. 'english', 'hindi', 'bengali')
+  price_update_template text not null,             -- Message structure for price updates (uses {gold} and {silver})
+  morning_greeting_template text not null,         -- Message structure for morning greetings (uses {name})
+  night_greeting_template text not null,           -- Message structure for night greetings (uses {name})
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Seed initial templates for English, Hindi, and Bengali
+insert into bullion_whatsapp_templates (language, price_update_template, morning_greeting_template, night_greeting_template)
+values 
+  ('english', 
+   'Live Bullion Price Update: ' || chr(10) || '✨ Gold rate: ₹{gold}' || chr(10) || '✨ Silver rate: ₹{silver}',
+   '☀️ Good Morning, {name}! Have a profitable day ahead. Here are today''s starting bullion rates.',
+   '🌙 Good Night, {name}! Thank you for trading with us today.'),
+  ('hindi',
+   'लाइव बुलियन मूल्य अपडेट: ' || chr(10) || '✨ सोने की दर: ₹{gold}' || chr(10) || '✨ चांदी की दर: ₹{silver}',
+   '☀️ शुभ प्रभात, {name}! आपका दिन लाभदायक रहे। ये हैं आज के बुलियन भाव।',
+   '🌙 शुभ रात्रि, {name}! आज हमारे साथ व्यापार करने के लिए धन्यवाद।'),
+  ('bengali',
+   'লাইভ বুলিয়ন মূল্য আপডেট: ' || chr(10) || '✨ সোনার দাম: ₹{gold}' || chr(10) || '✨ রূপার দাম: ₹{silver}',
+   '☀️ সুপ্রভাত, {name}! আপনার আজকের দিনটি লাভজনক হোক। এই হলো আজকের বুলিয়নের প্রারম্ভিক দর।',
+   '🌙 শুভ রাত্রি, {name}! আজ আমাদের সাথে ব্যবসা করার জন্য ধন্যবাদ।')
+on conflict (language) do nothing;
+
+-- 3. Create the NEW, isolated customer subscriptions table
 create table if not exists bullion_whatsapp_customers (
   id uuid primary key default gen_random_uuid(),
   contact_name text not null,
@@ -49,6 +76,9 @@ create table if not exists bullion_whatsapp_customers (
 
 -- Ensure auto-incrementing serial number exists to prioritize customers
 alter table bullion_whatsapp_customers add column if not exists serial_no serial;
+
+-- Ensure language preference column exists (defaults to 'english')
+alter table bullion_whatsapp_customers add column if not exists preferred_language text not null default 'english';
 
 -- Index for scanning active notifications
 create index if not exists idx_whatsapp_customers_notifications 
@@ -67,6 +97,7 @@ declare
   time_interval interval;
   price_changed boolean;
   message_text text;
+  tpl record;
 begin
   -- 1. Find the latest upload timestamp in the rates table (most recent row)
   select created_at into latest_timestamp from bullion_rates order by id desc limit 1;
@@ -108,18 +139,32 @@ begin
         price_changed := true;
       end if;
 
-      -- If any price changed, insert the identical uniform message text
+      -- If any price changed, insert the language-specific dynamic message
       if price_changed then
-        message_text := 'Live Bullion Price Update: ' || chr(10) ||
-                        '✨ Gold rate: ₹' || current_gold || chr(10) ||
-                        '✨ Silver rate: ₹' || current_silver || chr(10);
+        -- Find template for preferred language
+        select * into tpl 
+        from bullion_whatsapp_templates 
+        where lower(trim(both from language)) = lower(trim(both from cust.preferred_language));
+
+        -- Fallback to english if template not found
+        if not found then
+          select * into tpl 
+          from bullion_whatsapp_templates 
+          where lower(language) = 'english';
+        end if;
+
+        -- Format price update text using placeholders
+        message_text := replace(
+          replace(tpl.price_update_template, '{gold}', current_gold::text),
+          '{silver}', current_silver::text
+        );
 
         -- Expire any old pending price updates for this customer so they only get the latest one
         update scheduled_messages
         set status = 'expired', error = 'Superseded by newer price update'
         where contact_name = cust.contact_name
           and status = 'pending'
-          and message like 'Live Bullion Price Update%';
+          and (message like '%Price Update%' or message like '%মূল্য আপডেট%' or message like '%मूल्य अपडेट%');
 
         insert into scheduled_messages (
           contact_name,
@@ -157,18 +202,36 @@ returns void as $$
 declare
   cust record;
   msg text;
+  tpl record;
 begin
   -- Set any old pending greetings to expired before creating new ones
   update scheduled_messages 
   set status = 'expired', error = 'Superseded by new greeting'
   where status = 'pending' 
-    and (message like '☀️ Good Morning%' or message like '🌙 Good Night%');
+    and (
+      message like '☀️ Good Morning%' or message like '🌙 Good Night%' or
+      message like '☀️ शुभ प्रभात%' or message like '🌙 शुभ रात्रि%' or
+      message like '☀️ সুপ্রভাত%' or message like '🌙 শুভ রাত্রি%'
+    );
 
   for cust in select * from bullion_whatsapp_customers where is_active = true loop
+    -- Find template for preferred language
+    select * into tpl 
+    from bullion_whatsapp_templates 
+    where lower(trim(both from language)) = lower(trim(both from cust.preferred_language));
+
+    -- Fallback to english if template not found
+    if not found then
+      select * into tpl 
+      from bullion_whatsapp_templates 
+      where lower(language) = 'english';
+    end if;
+
+    -- Pick the correct morning or night template and replace the name placeholder
     if greeting_type = 'morning' then
-      msg := '☀️ Good Morning, ' || cust.contact_name || '! Have a profitable day ahead. Here are today''s starting bullion rates.';
+      msg := replace(tpl.morning_greeting_template, '{name}', cust.contact_name);
     else
-      msg := '🌙 Good Night, ' || cust.contact_name || '! Thank you for trading with us today.';
+      msg := replace(tpl.night_greeting_template, '{name}', cust.contact_name);
     end if;
 
     insert into scheduled_messages (
