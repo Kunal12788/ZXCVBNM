@@ -1,6 +1,9 @@
 -- =========================================================================
 -- SUPABASE SQL SCRIPT: BULLION WHATSAPP AUTO-SCHEDULER & GREETINGS
 -- =========================================================================
+-- Set Supabase database default timezone to IST (Indian Standard Time)
+ALTER DATABASE postgres SET timezone TO 'Asia/Kolkata';
+
 -- Copy and run this entire file in your Supabase SQL Editor.
 -- It will NOT affect or modify your existing bullion_rates table in any way.
 -- =========================================================================
@@ -203,16 +206,16 @@ select cron.schedule(
   'select check_bullion_price_updates();'
 );
 
--- 2. Daily morning greeting at 8:00 AM IST (2:30 AM UTC)
+-- 2. Daily morning greeting at 8:00 AM IST (local database time)
 select cron.schedule(
   'morning-greeting',
-  '30 2 * * *',
+  '0 8 * * *',
   $$select queue_greetings('morning');$$
 );
 
--- 3. Daily night greeting at 10:00 PM IST (which is 4:30 PM UTC / 16:30 UTC)
+-- 3. Daily night greeting at 10:00 PM IST (local database time)
 select cron.schedule(
   'night-greeting',
-  '30 16 * * *',
+  '0 22 * * *',
   $$select queue_greetings('night');$$
 );
