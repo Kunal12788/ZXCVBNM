@@ -28,9 +28,22 @@ create table if not exists scheduled_messages (
 
 -- Ensure auto-incrementing queue order exists for strict sequential processing
 alter table scheduled_messages add column if not exists queue_order serial;
+alter table scheduled_messages add column if not exists media_url text;
+alter table scheduled_messages add column if not exists media_type text default 'image';
 
 create index if not exists idx_scheduled_messages_due
   on scheduled_messages (status, send_at, next_retry_at);
+
+-- Create the advertisements broadcast table
+create table if not exists bullion_whatsapp_advertisements (
+  id uuid primary key default gen_random_uuid(),
+  media_url text not null,                          -- Direct URL to image or video
+  media_type text not null default 'image',        -- 'image' or 'video'
+  caption text,                                     -- Optional text caption (supports {name} placeholder)
+  status text not null default 'pending',           -- 'pending', 'processing', 'completed'
+  total_customers int default 0,
+  created_at timestamptz not null default now()
+);
 
 -- 2. Create the message templates table
 create table if not exists bullion_whatsapp_templates (
@@ -357,4 +370,60 @@ create trigger trigger_onboard_new_customer
 after insert on bullion_whatsapp_customers
 for each row
 execute function handle_new_customer_welcome();
+
+-- =========================================================================
+-- 7. Media Advertisement Broadcast Trigger
+-- =========================================================================
+create or replace function handle_new_advertisement_broadcast()
+returns trigger as $$
+declare
+  cust record;
+  caption_text text;
+  count_queued int := 0;
+begin
+  if NEW.status = 'pending' then
+    -- Loop through active customers ordered strictly by serial number
+    for cust in select * from bullion_whatsapp_customers where is_active = true order by serial_no asc loop
+      -- Replace optional {name} placeholder in caption if present
+      caption_text := replace(coalesce(NEW.caption, ''), '{name}', cust.contact_name);
+
+      insert into scheduled_messages (
+        contact_name,
+        phone_number,
+        message,
+        media_url,
+        media_type,
+        send_at,
+        status
+      ) values (
+        cust.contact_name,
+        cust.phone_number,
+        caption_text,
+        NEW.media_url,
+        lower(NEW.media_type),
+        now(),
+        'pending'
+      );
+
+      count_queued := count_queued + 1;
+    end loop;
+
+    -- Mark ad as completed broadcast setup
+    update bullion_whatsapp_advertisements 
+    set status = 'completed', total_customers = count_queued 
+    where id = NEW.id;
+  end if;
+
+  return NEW;
+end;
+$$ language plpgsql;
+
+-- Attach trigger to execute on new advertisement INSERT
+drop trigger if exists trigger_broadcast_advertisement on bullion_whatsapp_advertisements;
+
+create trigger trigger_broadcast_advertisement
+after insert on bullion_whatsapp_advertisements
+for each row
+execute function handle_new_advertisement_broadcast();
+
 

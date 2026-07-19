@@ -63,7 +63,13 @@ async function processMessage(row) {
   });
 
   try {
-    const deliveryStatus = await sendMessage(row.contact_name, row.message, row.phone_number);
+    const deliveryStatus = await sendMessage(
+      row.contact_name,
+      row.message,
+      row.phone_number,
+      row.media_url,
+      row.media_type
+    );
     await updateRow(row.id, {
       status: "sent",
       delivery_status: deliveryStatus,

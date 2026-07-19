@@ -1,6 +1,51 @@
-require("dotenv").config();
+const path = require("path");
+const fs = require("fs");
+const https = require("https");
+const http = require("http");
 const { chromium } = require("playwright");
 const logger = require("./logger");
+
+async function downloadFile(url, destFolder) {
+  if (!fs.existsSync(destFolder)) {
+    fs.mkdirSync(destFolder, { recursive: true });
+  }
+  
+  let ext = ".jpg";
+  const urlLower = url.toLowerCase();
+  if (urlLower.includes(".png")) ext = ".png";
+  else if (urlLower.includes(".jpeg") || urlLower.includes(".jpg")) ext = ".jpg";
+  else if (urlLower.includes(".mp4")) ext = ".mp4";
+  else if (urlLower.includes(".webp")) ext = ".webp";
+  else if (urlLower.includes(".gif")) ext = ".gif";
+
+  const filePath = path.join(destFolder, `temp_${Date.now()}_${Math.floor(Math.random()*1000)}${ext}`);
+  const file = fs.createWriteStream(filePath);
+
+  return new Promise((resolve, reject) => {
+    const client = url.startsWith("https") ? https : http;
+    const request = client.get(url, (response) => {
+      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+        fs.unlink(filePath, () => {});
+        downloadFile(response.headers.location, destFolder).then(resolve).catch(reject);
+        return;
+      }
+      if (response.statusCode !== 200) {
+        fs.unlink(filePath, () => {});
+        reject(new Error(`Failed to download media: HTTP ${response.statusCode}`));
+        return;
+      }
+      response.pipe(file);
+      file.on("finish", () => {
+        file.close(() => resolve(filePath));
+      });
+    });
+
+    request.on("error", (err) => {
+      fs.unlink(filePath, () => {});
+      reject(err);
+    });
+  });
+}
 
 const DEBUG_PORT = process.env.CHROME_DEBUG_PORT || "9222";
 const DELIVERY_CONFIRM_TIMEOUT_MS = 5000; // Reduced from 15s to 5s to process multiple customers much faster
@@ -193,34 +238,83 @@ async function waitForDeliveryConfirmation(page) {
   }
 }
 
-async function sendMessage(contactName, messageText, phoneNumber = null) {
+async function sendMessage(contactName, messageText, phoneNumber = null, mediaUrl = null, mediaType = "image") {
   const page = await getWhatsAppPage();
   await waitForLoggedIn(page);
 
   await openChat(page, contactName, phoneNumber);
 
-  const messageBox = page.locator(SELECTORS.messageBox);
-  await messageBox.waitFor({ state: "visible", timeout: 10000 });
-  await messageBox.click();
+  if (mediaUrl) {
+    let tempFilePath = null;
+    try {
+      const tempDir = path.join(__dirname, "temp_media");
+      logger.info(`Downloading ${mediaType || "media"} from ${mediaUrl}...`);
+      tempFilePath = await downloadFile(mediaUrl, tempDir);
 
-  const lines = messageText.split("\n");
-  for (let i = 0; i < lines.length; i++) {
-    await messageBox.pressSequentially(lines[i], { delay: 15 });
-    if (i < lines.length - 1) {
-      await page.keyboard.down("Shift");
-      await page.keyboard.press("Enter");
-      await page.keyboard.up("Shift");
+      logger.info(`Attaching media file: ${tempFilePath}...`);
+      // Target file input element in WhatsApp Web
+      const fileInput = page.locator('input[type="file"]').first();
+      await fileInput.setInputFiles(tempFilePath);
+
+      // Wait for media preview overlay screen to open
+      await page.waitForTimeout(2500);
+
+      // If caption text is provided, fill it into the caption textbox in media preview screen
+      if (messageText && messageText.trim() !== "") {
+        const captionBox = page.locator('div[contenteditable="true"]').last();
+        await captionBox.waitFor({ state: "visible", timeout: 5000 }).catch(() => {});
+        await captionBox.click().catch(() => {});
+
+        const lines = messageText.split("\n");
+        for (let i = 0; i < lines.length; i++) {
+          await captionBox.pressSequentially(lines[i], { delay: 15 });
+          if (i < lines.length - 1) {
+            await page.keyboard.down("Shift");
+            await page.keyboard.press("Enter");
+            await page.keyboard.up("Shift");
+          }
+        }
+      }
+
+      // Click the send button on the media preview screen
+      const mediaSendBtn = page.locator('span[data-icon="send"], button[aria-label="Send"], div[aria-label="Send"]').last();
+      await mediaSendBtn.waitFor({ state: "visible", timeout: 5000 });
+      await mediaSendBtn.click();
+      await page.waitForTimeout(2000);
+    } catch (mediaErr) {
+      logger.error(`Error sending media attachment: ${mediaErr.message}`);
+      throw mediaErr;
+    } finally {
+      if (tempFilePath && fs.existsSync(tempFilePath)) {
+        try {
+          fs.unlinkSync(tempFilePath);
+        } catch (e) {}
+      }
     }
-  }
+  } else {
+    // Normal text-only message flow
+    const messageBox = page.locator(SELECTORS.messageBox);
+    await messageBox.waitFor({ state: "visible", timeout: 10000 });
+    await messageBox.click();
 
-  await page.locator(SELECTORS.sendButton).click();
+    const lines = (messageText || "").split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      await messageBox.pressSequentially(lines[i], { delay: 15 });
+      if (i < lines.length - 1) {
+        await page.keyboard.down("Shift");
+        await page.keyboard.press("Enter");
+        await page.keyboard.up("Shift");
+      }
+    }
+
+    await page.locator(SELECTORS.sendButton).click();
+  }
 
   const deliveryStatus = await waitForDeliveryConfirmation(page);
   if (deliveryStatus === "unconfirmed") {
     logger.warn(
       `Sent to "${contactName}" but couldn't confirm delivery via tick icon within ` +
-        `${DELIVERY_CONFIRM_TIMEOUT_MS / 1000}s. It likely still went through — ` +
-        `WhatsApp's tick rendering can lag or the selector may need updating.`
+        `${DELIVERY_CONFIRM_TIMEOUT_MS / 1000}s. It likely still went through.`
     );
   }
 
