@@ -1,0 +1,31 @@
+[2026-07-19T14:47:57.464Z] [INFO] Scheduler starting. Polling every 10s.
+[2026-07-19T14:47:57.479Z] [INFO] Make sure Chrome is running via launch-chrome.bat and WhatsApp Web is logged in.
+[2026-07-19T14:47:58.442Z] [INFO] Cleaned up 3 expired pending messages from offline backlog.
+[2026-07-19T14:47:59.169Z] [INFO] Test console running at http://localhost:4545
+[2026-07-19T14:47:59.173Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-19T14:50:50.286Z] [INFO] 1 message(s) due.
+[2026-07-19T14:50:50.320Z] [INFO] Sending to "KUNAL " (attempt 1/4): 👋 KUNAL , आपका स्वागत है! SSR Bullion में पंजीकरण...
+[2026-07-19T14:50:52.033Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-19T14:50:54.273Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-19T14:50:58.966Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-19T14:51:04.341Z] [ERROR] Failed -> KUNAL : locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('footer div[contenteditable="true"]') to be visible[22m
+
+[2026-07-19T14:51:06.222Z] [WARN] Will retry "KUNAL " in 2 min (attempt 2/4).
+[2026-07-19T14:53:51.211Z] [INFO] 1 message(s) due.
+[2026-07-19T14:53:51.212Z] [INFO] Sending to "KUNAL" (attempt 1/4): 👋 KUNAL, आपका स्वागत है! SSR Bullion में पंजीकरण ...
+[2026-07-19T14:53:52.299Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-19T14:53:54.366Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-19T14:53:59.107Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-19T14:54:03.567Z] [WARN] Sent to "KUNAL" but couldn't confirm delivery via tick icon within 5s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-19T14:54:05.853Z] [INFO] Sent -> KUNAL (delivery_status: unconfirmed)
+[2026-07-19T14:55:01.292Z] [INFO] 1 message(s) due.
+[2026-07-19T14:55:01.293Z] [INFO] Sending to "KUNAL" (attempt 1/4): लाइव बुलियन मूल्य अपडेट: 
+✨ सोने की दर: ₹145752
+✨ ...
+[2026-07-19T14:55:02.477Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-19T14:55:04.557Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-19T14:55:09.143Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-19T14:55:11.743Z] [WARN] Sent to "KUNAL" but couldn't confirm delivery via tick icon within 5s. It likely still went through — WhatsApp's tick rendering can lag or the selector may need updating.
+[2026-07-19T14:55:14.109Z] [INFO] Sent -> KUNAL (delivery_status: unconfirmed)

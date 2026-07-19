@@ -299,8 +299,11 @@ returns trigger as $$
 declare
   msg text;
   tpl record;
+  current_gold numeric;
+  current_silver numeric;
+  latest_timestamp timestamptz;
 begin
-  -- Look up template for customer's preferred language
+  -- 1. Look up template for customer's preferred language
   select * into tpl 
   from bullion_whatsapp_templates 
   where lower(trim(both from language)) = lower(trim(both from NEW.preferred_language));
@@ -312,10 +315,10 @@ begin
     where lower(language) = 'english';
   end if;
 
-  -- Format welcome message replacing {name} placeholder
+  -- 2. Format welcome message replacing {name} placeholder
   msg := replace(coalesce(tpl.welcome_template, 'Welcome {name}! Thank you for registering with SSR Bullion.'), '{name}', NEW.contact_name);
 
-  -- Insert into queue for immediate delivery
+  -- 3. Insert welcome message into queue for immediate delivery
   insert into scheduled_messages (
     contact_name,
     phone_number,
@@ -329,6 +332,19 @@ begin
     now(),
     'pending'
   );
+
+  -- 4. Fetch the latest live market rates to set baseline for this new customer
+  select created_at into latest_timestamp from bullion_rates order by id desc limit 1;
+  select price into current_gold from bullion_rates where item = 'gold_995_100gms' order by id desc limit 1;
+  select price into current_silver from bullion_rates where item = 'silver_999_1kg' order by id desc limit 1;
+
+  -- 5. Initialize the new customer's timestamp & baseline prices so they don't get an extra live rate message right away
+  update bullion_whatsapp_customers
+  set 
+    last_notification_sent_at = now(),
+    last_gold_price_sent = current_gold,
+    last_silver_price_sent = current_silver
+  where id = NEW.id;
 
   return NEW;
 end;
