@@ -257,17 +257,17 @@ async function sendMessage(contactName, messageText, phoneNumber = null, mediaUr
       await fileInput.setInputFiles(tempFilePath);
 
       // Wait for media preview overlay screen to open
-      await page.waitForTimeout(2500);
+      await page.waitForTimeout(1000);
 
       // If caption text is provided, fill it into the caption textbox in media preview screen
       if (messageText && messageText.trim() !== "") {
         const captionBox = page.locator('div[contenteditable="true"]').last();
-        await captionBox.waitFor({ state: "visible", timeout: 5000 }).catch(() => {});
+        await captionBox.waitFor({ state: "visible", timeout: 3000 }).catch(() => {});
         await captionBox.click().catch(() => {});
 
         const lines = messageText.split("\n");
         for (let i = 0; i < lines.length; i++) {
-          await captionBox.pressSequentially(lines[i], { delay: 15 });
+          await captionBox.pressSequentially(lines[i], { delay: 10 });
           if (i < lines.length - 1) {
             await page.keyboard.down("Shift");
             await page.keyboard.press("Enter");
@@ -277,10 +277,10 @@ async function sendMessage(contactName, messageText, phoneNumber = null, mediaUr
       }
 
       // Click the send button on the media preview screen or press Enter
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
       const mediaSendBtn = page
         .locator('span[data-icon="send"], div[aria-label="Send"], button[aria-label="Send"], div[role="button"]:has(span[data-icon="send"]), [data-icon="send"]')
-        .first();
+        .last();
 
       let clicked = false;
       try {
@@ -298,8 +298,8 @@ async function sendMessage(contactName, messageText, phoneNumber = null, mediaUr
         await page.keyboard.press("Enter");
       }
 
-      // Wait 3 seconds for WhatsApp to process, upload, and close the media preview modal
-      await page.waitForTimeout(3000);
+      // Wait 1.5 seconds for WhatsApp to process, upload, and close the media preview modal
+      await page.waitForTimeout(1500);
     } catch (mediaErr) {
       logger.error(`Error sending media attachment: ${mediaErr.message}`);
       throw mediaErr;
