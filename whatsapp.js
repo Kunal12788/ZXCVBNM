@@ -276,11 +276,30 @@ async function sendMessage(contactName, messageText, phoneNumber = null, mediaUr
         }
       }
 
-      // Click the send button on the media preview screen
-      const mediaSendBtn = page.locator('span[data-icon="send"], button[aria-label="Send"], div[aria-label="Send"]').last();
-      await mediaSendBtn.waitFor({ state: "visible", timeout: 5000 });
-      await mediaSendBtn.click();
-      await page.waitForTimeout(2000);
+      // Click the send button on the media preview screen or press Enter
+      await page.waitForTimeout(500);
+      const mediaSendBtn = page
+        .locator('span[data-icon="send"], div[aria-label="Send"], button[aria-label="Send"], div[role="button"]:has(span[data-icon="send"]), [data-icon="send"]')
+        .first();
+
+      let clicked = false;
+      try {
+        if (await mediaSendBtn.isVisible({ timeout: 2000 })) {
+          await mediaSendBtn.click({ force: true });
+          clicked = true;
+          logger.info("Clicked media preview Send button.");
+        }
+      } catch (e) {
+        logger.warn(`Could not click media Send button directly: ${e.message}`);
+      }
+
+      if (!clicked) {
+        logger.info("Pressing Enter to submit media preview...");
+        await page.keyboard.press("Enter");
+      }
+
+      // Wait 3 seconds for WhatsApp to process, upload, and close the media preview modal
+      await page.waitForTimeout(3000);
     } catch (mediaErr) {
       logger.error(`Error sending media attachment: ${mediaErr.message}`);
       throw mediaErr;
