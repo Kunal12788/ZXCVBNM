@@ -38,26 +38,34 @@ create table if not exists bullion_whatsapp_templates (
   price_update_template text not null,             -- Message structure for price updates (uses {gold} and {silver})
   morning_greeting_template text not null,         -- Message structure for morning greetings (uses {name})
   night_greeting_template text not null,           -- Message structure for night greetings (uses {name})
+  welcome_template text,                           -- Message structure for welcome message (uses {name})
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
+-- Ensure welcome_template column exists on existing installations
+alter table bullion_whatsapp_templates add column if not exists welcome_template text;
+
 -- Seed initial templates for English, Hindi, and Bengali
-insert into bullion_whatsapp_templates (language, price_update_template, morning_greeting_template, night_greeting_template)
+insert into bullion_whatsapp_templates (language, price_update_template, morning_greeting_template, night_greeting_template, welcome_template)
 values 
   ('english', 
    'Live Bullion Price Update: ' || chr(10) || '✨ Gold rate: ₹{gold}' || chr(10) || '✨ Silver rate: ₹{silver}',
    '☀️ Good Morning, {name}! Have a profitable day ahead. Here are today''s starting bullion rates.',
-   '🌙 Good Night, {name}! Thank you for trading with us today.'),
+   '🌙 Good Night, {name}! Thank you for trading with us today.',
+   '👋 Welcome {name}! Thank you for registering with SSR Bullion. You will now receive live rate alerts and daily updates here on WhatsApp.'),
   ('hindi',
    'लाइव बुलियन मूल्य अपडेट: ' || chr(10) || '✨ सोने की दर: ₹{gold}' || chr(10) || '✨ चांदी की दर: ₹{silver}',
    '☀️ शुभ प्रभात, {name}! आपका दिन लाभदायक रहे। ये हैं आज के बुलियन भाव।',
-   '🌙 शुभ रात्रि, {name}! आज हमारे साथ व्यापार करने के लिए धन्यवाद।'),
+   '🌙 शुभ रात्रि, {name}! आज हमारे साथ व्यापार करने के लिए धन्यवाद।',
+   '👋 {name}, आपका स्वागत है! SSR Bullion में पंजीकरण करने के लिए धन्यवाद। अब आपको व्हाट्सएप पर लाइव भाव और दैनिक अपडेट प्राप्त होंगे।'),
   ('bengali',
    'লাইভ বুলিয়ন মূল্য আপডেট: ' || chr(10) || '✨ সোনার দাম: ₹{gold}' || chr(10) || '✨ রূপার দাম: ₹{silver}',
    '☀️ সুপ্রভাত, {name}! আপনার আজকের দিনটি লাভজনক হোক। এই হলো আজকের বুলিয়নের প্রারম্ভিক দর।',
-   '🌙 শুভ রাত্রি, {name}! আজ আমাদের সাথে ব্যবসা করার জন্য ধন্যবাদ।')
-on conflict (language) do nothing;
+   '🌙 শুভ রাত্রি, {name}! আজ আমাদের সাথে ব্যবসা করার জন্য ধন্যবাদ।',
+   '👋 {name}, আপনাকে স্বাগতম! SSR Bullion-এ নিবন্ধন করার জন্য ধন্যবাদ। আপনি এখন থেকে হোয়াটসঅ্যাপে লাইভ রেট অ্যালার্ট এবং দৈনিক আপডেট পাবেন.')
+on conflict (language) do update set
+  welcome_template = EXCLUDED.welcome_template;
 
 -- 3. Create the NEW, isolated customer subscriptions table
 create table if not exists bullion_whatsapp_customers (
@@ -282,3 +290,55 @@ select cron.schedule(
   '0 22 * * *',
   $$select queue_greetings('night');$$
 );
+
+-- =========================================================================
+-- 6. Automatic One-Time Welcome Message Trigger for New Registrations
+-- =========================================================================
+create or replace function handle_new_customer_welcome()
+returns trigger as $$
+declare
+  msg text;
+  tpl record;
+begin
+  -- Look up template for customer's preferred language
+  select * into tpl 
+  from bullion_whatsapp_templates 
+  where lower(trim(both from language)) = lower(trim(both from NEW.preferred_language));
+
+  -- Fallback to english if language template is missing
+  if not found then
+    select * into tpl 
+    from bullion_whatsapp_templates 
+    where lower(language) = 'english';
+  end if;
+
+  -- Format welcome message replacing {name} placeholder
+  msg := replace(coalesce(tpl.welcome_template, 'Welcome {name}! Thank you for registering with SSR Bullion.'), '{name}', NEW.contact_name);
+
+  -- Insert into queue for immediate delivery
+  insert into scheduled_messages (
+    contact_name,
+    phone_number,
+    message,
+    send_at,
+    status
+  ) values (
+    NEW.contact_name,
+    NEW.phone_number,
+    msg,
+    now(),
+    'pending'
+  );
+
+  return NEW;
+end;
+$$ language plpgsql;
+
+-- Attach trigger to execute ONLY on new customer INSERT
+drop trigger if exists trigger_onboard_new_customer on bullion_whatsapp_customers;
+
+create trigger trigger_onboard_new_customer
+after insert on bullion_whatsapp_customers
+for each row
+execute function handle_new_customer_welcome();
+
