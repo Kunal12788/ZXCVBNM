@@ -63,21 +63,24 @@ alter table bullion_whatsapp_templates add column if not exists welcome_template
 insert into bullion_whatsapp_templates (language, price_update_template, morning_greeting_template, night_greeting_template, welcome_template)
 values 
   ('english', 
-   'Live Bullion Price Update: ' || chr(10) || '✨ Gold rate: ₹{gold}' || chr(10) || '✨ Silver rate: ₹{silver}',
-   '☀️ Good Morning, {name}! Have a profitable day ahead. Here are today''s starting bullion rates.',
-   '🌙 Good Night, {name}! Thank you for trading with us today.',
+   '*SSR BULLION | MARKET ALERT*' || chr(10) || chr(10) || 'The bullion market has been updated.' || chr(10) || chr(10) || 'Check the latest Gold & Silver prices, explore live market trends, and make informed decisions with the *SSR Bullion* app.' || chr(10) || chr(10) || '👉 *Open SSR BULLION now to view the latest rates.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_TRUSTED SOURCE FOR LIVE BULLION RATES._',
+   '*☀️ GOOD MORNING | SSR BULLION*' || chr(10) || chr(10) || 'Wishing you a successful and prosperous day ahead.' || chr(10) || chr(10) || 'Start your day with the latest Gold & Silver bullion rates and stay informed with real-time market updates.' || chr(10) || chr(10) || '*👉 Open SSR BULLION to check today''s live market prices.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || ' *SSR BULLION*' || chr(10) || '_Your Trusted Source for Live Bullion Rates._',
+   '*🌙 GOOD NIGHT | SSR BULLION*' || chr(10) || chr(10) || 'The trading day has come to an end.' || chr(10) || chr(10) || 'Thank you for trusting *SSR BULLION* for your daily bullion market updates. Wishing you a peaceful night, and we look forward to serving you with fresh market insights tomorrow.' || chr(10) || chr(10) || '*👉 See you tomorrow on SSR BULLION for the latest live Gold & Silver rates.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_Your Trusted Source for Live Bullion Rates._',
    '👋 Welcome {name}! Thank you for registering with SSR Bullion. You will now receive live rate alerts and daily updates here on WhatsApp.'),
   ('hindi',
-   'लाइव बुलियन मूल्य अपडेट: ' || chr(10) || '✨ सोने की दर: ₹{gold}' || chr(10) || '✨ चांदी की दर: ₹{silver}',
-   '☀️ शुभ प्रभात, {name}! आपका दिन लाभदायक रहे। ये हैं आज के बुलियन भाव।',
-   '🌙 शुभ रात्रि, {name}! आज हमारे साथ व्यापार करने के लिए धन्यवाद।',
+   '*SSR BULLION | मार्केट अलर्ट*' || chr(10) || chr(10) || 'बुलियन मार्केट अपडेट हो गया है।' || chr(10) || chr(10) || '*SSR Bullion* ऐप पर सोने और चांदी के नवीनतम भाव देखें, लाइव मार्केट ट्रेंड्स की जानकारी लें और सही निर्णय लें।' || chr(10) || chr(10) || '👉 *नवीनतम दरें देखने के लिए अभी SSR BULLION खोलें।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_',
+   '*☀️ शुभ प्रभात | SSR BULLION*' || chr(10) || chr(10) || 'आपके लिए एक सफल और समृद्ध दिन की कामना करते हैं।' || chr(10) || chr(10) || 'अपने दिन की शुरुआत सोने और चांदी के नवीनतम बुलियन भावों के साथ करें और रियल-टाइम मार्केट अपडेट्स से जुड़े रहें।' || chr(10) || chr(10) || '*👉 आज के लाइव मार्केट भाव देखने के लिए SSR BULLION खोलें।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || ' *SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_',
+   '*🌙 शुभ रात्रि | SSR BULLION*' || chr(10) || chr(10) || 'आज का व्यावसायिक दिन समाप्त हो गया है।' || chr(10) || chr(10) || 'अपने दैनिक बुलियन मार्केट अपडेट्स के लिए *SSR BULLION* पर भरोसा करने के लिए धन्यवाद। आपको एक शांतिपूर्ण रात की शुभकामनाएं, और हम कल ताज़ा मार्केट अपडेट्स के साथ आपकी सेवा करने के लिए उत्सुक हैं।' || chr(10) || chr(10) || '*👉 नवीनतम लाइव सोने और चांदी के भावों के लिए कल फिर SSR BULLION पर मिलते हैं।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_',
    '👋 {name}, आपका स्वागत है! SSR Bullion में पंजीकरण करने के लिए धन्यवाद। अब आपको व्हाट्सएप पर लाइव भाव और दैनिक अपडेट प्राप्त होंगे।'),
   ('bengali',
-   'লাইভ বুলিয়ন মূল্য আপডেট: ' || chr(10) || '✨ সোনার দাম: ₹{gold}' || chr(10) || '✨ রূপার দাম: ₹{silver}',
-   '☀️ সুপ্রভাত, {name}! আপনার আজকের দিনটি লাভজনক হোক। এই হলো আজকের বুলিয়নের প্রারম্ভিক দর।',
-   '🌙 শুভ রাত্রি, {name}! আজ আমাদের সাথে ব্যবসা করার জন্য ধন্যবাদ।',
+   '*SSR BULLION | মার্কেট অ্যালার্ট*' || chr(10) || chr(10) || 'বুলিয়ন মার্কেট আপডেট হয়েছে।' || chr(10) || chr(10) || '*SSR Bullion* অ্যাপে সোনা ও রূপার নতুন দর দেখুন, লাইভ মার্কেট ট্রেন্ড জানুন এবং সঠিক সিদ্ধান্ত নিন।' || chr(10) || chr(10) || '👉 *সর্বশেষ দর দেখতে এখনই SSR BULLION ওপেন করুন।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_',
+   '*☀️ সুপ্রভাত | SSR BULLION*' || chr(10) || chr(10) || 'আপনার আজকের দিনটি সফল ও সমৃদ্ধ হোক।' || chr(10) || chr(10) || 'সোনা ও রূপার সর্বশেষ বুলিয়ন দর দিয়ে আপনার দিন শুরু করুন এবং রিয়েল-টাইম মার্কেট আপডেটের সাথে থাকুন।' || chr(10) || chr(10) || '*👉 আজকের লাইভ মার্কেট দর দেখতে SSR BULLION ওপেন করুন।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || ' *SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_',
+   '*🌙 শুভ রাত্রি | SSR BULLION*' || chr(10) || chr(10) || 'আজকের ট্রেডিং দিন শেষ হয়েছে।' || chr(10) || chr(10) || 'আপনার দৈনিক বুলিয়ন মার্কেট আপডেটের জন্য *SSR BULLION*-এর ওপর ভরসা রাখার জন্য ধন্যবাদ। আপনাকে একটি শান্তিময় রাতের শুভেচ্ছা, এবং আমরা আগামীকাল নতুন মার্কেট আপডেট নিয়ে আপনার সেবায় নিয়োজিত থাকার প্রত্যাশা করছি।' || chr(10) || chr(10) || '*👉 সর্বশেষ লাইভ সোনা ও রূপার দর দেখতে আগামীকাল আবার দেখা হবে SSR BULLION-এ।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_',
    '👋 {name}, আপনাকে স্বাগতম! SSR Bullion-এ নিবন্ধন করার জন্য ধন্যবাদ। আপনি এখন থেকে হোয়াটসঅ্যাপে লাইভ রেট অ্যালার্ট এবং দৈনিক আপডেট পাবেন.')
 on conflict (language) do update set
+  price_update_template = EXCLUDED.price_update_template,
+  morning_greeting_template = EXCLUDED.morning_greeting_template,
+  night_greeting_template = EXCLUDED.night_greeting_template,
   welcome_template = EXCLUDED.welcome_template;
 
 -- 3. Create the NEW, isolated customer subscriptions table
@@ -146,69 +149,59 @@ begin
       else time_interval := interval '15 minutes';
     end case;
 
-    -- Check if the priority interval has elapsed
+    -- Check if the priority interval has elapsed (sends unconditionally on interval schedule)
     if (now() - cust.last_notification_sent_at) >= time_interval then
-      price_changed := false;
+      -- Find template for preferred language
+      select * into tpl 
+      from bullion_whatsapp_templates 
+      where lower(trim(both from language)) = lower(trim(both from cust.preferred_language));
 
-      -- Check Gold Change since last sent to this customer
-      if current_gold is not null and (cust.last_gold_price_sent is null or cust.last_gold_price_sent <> current_gold) then
-        price_changed := true;
-      end if;
-
-      -- Check Silver Change since last sent to this customer
-      if current_silver is not null and (cust.last_silver_price_sent is null or cust.last_silver_price_sent <> current_silver) then
-        price_changed := true;
-      end if;
-
-      -- If any price changed, insert the language-specific dynamic message
-      if price_changed then
-        -- Find template for preferred language
+      -- Fallback to english if template not found
+      if not found then
         select * into tpl 
         from bullion_whatsapp_templates 
-        where lower(trim(both from language)) = lower(trim(both from cust.preferred_language));
-
-        -- Fallback to english if template not found
-        if not found then
-          select * into tpl 
-          from bullion_whatsapp_templates 
-          where lower(language) = 'english';
-        end if;
-
-        -- Format price update text using placeholders
-        message_text := replace(
-          replace(tpl.price_update_template, '{gold}', current_gold::text),
-          '{silver}', current_silver::text
-        );
-
-        -- Expire any old pending price updates for this customer so they only get the latest one
-        update scheduled_messages
-        set status = 'expired', error = 'Superseded by newer price update'
-        where contact_name = cust.contact_name
-          and status = 'pending'
-          and (message like '%Price Update%' or message like '%মূল্য আপডেট%' or message like '%मूल्य अपडेट%');
-
-        insert into scheduled_messages (
-          contact_name,
-          phone_number,
-          message,
-          send_at,
-          status
-        ) values (
-          cust.contact_name,
-          cust.phone_number,
-          message_text,
-          now(),
-          'pending'
-        );
-
-        -- Update customer's last notified status
-        update bullion_whatsapp_customers
-        set 
-          last_gold_price_sent = current_gold,
-          last_silver_price_sent = current_silver,
-          last_notification_sent_at = now()
-        where id = cust.id;
+        where lower(language) = 'english';
       end if;
+
+      -- Format market alert text (replaces placeholders if present)
+      message_text := replace(
+        replace(tpl.price_update_template, '{gold}', coalesce(current_gold::text, '')),
+        '{silver}', coalesce(current_silver::text, '')
+      );
+
+      -- Expire any old pending market alerts for this customer so they only get the latest one
+      update scheduled_messages
+      set status = 'expired', error = 'Superseded by newer interval alert'
+      where contact_name = cust.contact_name
+        and status = 'pending'
+        and (
+          message like '%MARKET ALERT%' or 
+          message like '%मार्केट अलर्ट%' or 
+          message like '%মার্কেট অ্যালার্ট%' or 
+          message like '%Price Update%'
+        );
+
+      insert into scheduled_messages (
+        contact_name,
+        phone_number,
+        message,
+        send_at,
+        status
+      ) values (
+        cust.contact_name,
+        cust.phone_number,
+        message_text,
+        now(),
+        'pending'
+      );
+
+      -- Update customer's last notified status and timestamp
+      update bullion_whatsapp_customers
+      set 
+        last_gold_price_sent = current_gold,
+        last_silver_price_sent = current_silver,
+        last_notification_sent_at = now()
+      where id = cust.id;
 
     end if;
   end loop;
@@ -297,10 +290,10 @@ select cron.schedule(
   $$select queue_greetings('morning');$$
 );
 
--- 3. Daily night greeting at 10:00 PM IST (local database time)
+-- 3. Daily night greeting at 9:00 PM IST (local database time)
 select cron.schedule(
   'night-greeting',
-  '0 22 * * *',
+  '0 21 * * *',
   $$select queue_greetings('night');$$
 );
 
