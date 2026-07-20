@@ -124,9 +124,9 @@ declare
   message_text text;
   tpl record;
 begin
-  -- Restrict Market Alert updates strictly between 10:30 AM IST and 8:45 PM IST
+  -- Restrict Market Alert updates strictly between 10:30 AM IST and 9:15 PM IST
   current_time_ist := (now() at time zone 'Asia/Kolkata')::time;
-  if current_time_ist < '10:30:00'::time or current_time_ist > '20:45:00'::time then
+  if current_time_ist < '10:30:00'::time or current_time_ist > '21:15:00'::time then
     return; -- Outside market hours, do not queue price update alerts
   end if;
 
@@ -290,17 +290,17 @@ select cron.schedule(
   'select check_bullion_price_updates();'
 );
 
--- 2. Daily morning greeting at 7:00 AM IST (local database time)
+-- 2. Daily morning greeting at 7:00 AM IST (1:30 AM UTC server time)
 select cron.schedule(
   'morning-greeting',
-  '0 7 * * *',
+  '30 1 * * *',
   $$select queue_greetings('morning');$$
 );
 
--- 3. Daily night greeting at 9:00 PM IST (local database time)
+-- 3. Daily night greeting at 9:30 PM IST (4:00 PM UTC / 16:00 UTC server time)
 select cron.schedule(
   'night-greeting',
-  '0 21 * * *',
+  '0 16 * * *',
   $$select queue_greetings('night');$$
 );
 

@@ -478,3 +478,7 @@ The bullion market h...
 [2026-07-20T15:26:01.124Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
 [2026-07-20T15:26:06.679Z] [WARN] Sent to "KUNAL" but couldn't confirm delivery via tick icon within 5s. It likely still went through.
 [2026-07-20T15:26:08.314Z] [INFO] Sent -> KUNAL (delivery_status: unconfirmed)
+[2026-07-20T15:28:08.970Z] [INFO] Scheduler starting. Polling every 10s.
+[2026-07-20T15:28:08.994Z] [INFO] Make sure Chrome is running via launch-chrome.bat and WhatsApp Web is logged in.
+[2026-07-20T15:28:09.253Z] [INFO] Test console running at http://localhost:4545
+[2026-07-20T15:28:09.261Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
