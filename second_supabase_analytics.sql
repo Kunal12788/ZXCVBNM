@@ -112,8 +112,9 @@ $$;
 -- Grant execution permission to anon and authenticated roles
 grant execute on function record_app_open_event to anon, authenticated, public;
 
--- 5. Create a clean Grouped View for Supabase Dashboard
-create or replace view customer_analytics_dashboard as
+-- 5. Create a clean Grouped View for Supabase Dashboard (with security_invoker = true for Supabase security compliance)
+create or replace view customer_analytics_dashboard 
+with (security_invoker = true) as
 select 
   s.contact_name,
   s.phone_number,
