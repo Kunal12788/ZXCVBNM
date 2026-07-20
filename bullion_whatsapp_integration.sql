@@ -114,6 +114,7 @@ create index if not exists idx_whatsapp_customers_notifications
 create or replace function check_bullion_price_updates()
 returns void as $$
 declare
+  current_time_ist time;
   current_gold numeric;
   current_silver numeric;
   latest_timestamp timestamptz;
@@ -123,6 +124,12 @@ declare
   message_text text;
   tpl record;
 begin
+  -- Restrict Market Alert updates strictly between 10:30 AM IST and 8:45 PM IST
+  current_time_ist := (now() at time zone 'Asia/Kolkata')::time;
+  if current_time_ist < '10:30:00'::time or current_time_ist > '20:45:00'::time then
+    return; -- Outside market hours, do not queue price update alerts
+  end if;
+
   -- 1. Find the latest upload timestamp in the rates table (most recent row)
   select created_at into latest_timestamp from bullion_rates order by id desc limit 1;
 
