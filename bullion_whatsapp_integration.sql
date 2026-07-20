@@ -66,17 +66,17 @@ values
    '*SSR BULLION | MARKET ALERT*' || chr(10) || chr(10) || 'The bullion market has been updated.' || chr(10) || chr(10) || 'Check the latest Gold & Silver prices, explore live market trends, and make informed decisions with the *SSR Bullion* app.' || chr(10) || chr(10) || '👉 *Open SSR BULLION now to view the latest rates.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_TRUSTED SOURCE FOR LIVE BULLION RATES._',
    '*☀️ GOOD MORNING | SSR BULLION*' || chr(10) || chr(10) || 'Wishing you a successful and prosperous day ahead.' || chr(10) || chr(10) || 'Start your day with the latest Gold & Silver bullion rates and stay informed with real-time market updates.' || chr(10) || chr(10) || '*👉 Open SSR BULLION to check today''s live market prices.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || ' *SSR BULLION*' || chr(10) || '_Your Trusted Source for Live Bullion Rates._',
    '*🌙 GOOD NIGHT | SSR BULLION*' || chr(10) || chr(10) || 'The trading day has come to an end.' || chr(10) || chr(10) || 'Thank you for trusting *SSR BULLION* for your daily bullion market updates. Wishing you a peaceful night, and we look forward to serving you with fresh market insights tomorrow.' || chr(10) || chr(10) || '*👉 See you tomorrow on SSR BULLION for the latest live Gold & Silver rates.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_Your Trusted Source for Live Bullion Rates._',
-   '👋 Welcome {name}! Thank you for registering with SSR Bullion. You will now receive live rate alerts and daily updates here on WhatsApp.'),
+   '*✨ WELCOME TO SSR BULLION*' || chr(10) || chr(10) || 'Welcome to a trusted platform for live bullion market intelligence.' || chr(10) || chr(10) || 'Thank you for choosing *SSR BULLION*. You are now connected to real-time Gold & Silver bullion rates, live market updates, and accurate pricing information designed to help you stay informed throughout the trading day.' || chr(10) || chr(10) || '*👉 Open SSR BULLION to access the latest live bullion rates and begin your experience.*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_Your Trusted Source for Live Bullion Rates._'),
   ('hindi',
    '*SSR BULLION | मार्केट अलर्ट*' || chr(10) || chr(10) || 'बुलियन मार्केट अपडेट हो गया है।' || chr(10) || chr(10) || '*SSR Bullion* ऐप पर सोने और चांदी के नवीनतम भाव देखें, लाइव मार्केट ट्रेंड्स की जानकारी लें और सही निर्णय लें।' || chr(10) || chr(10) || '👉 *नवीनतम दरें देखने के लिए अभी SSR BULLION खोलें।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_',
    '*☀️ शुभ प्रभात | SSR BULLION*' || chr(10) || chr(10) || 'आपके लिए एक सफल और समृद्ध दिन की कामना करते हैं।' || chr(10) || chr(10) || 'अपने दिन की शुरुआत सोने और चांदी के नवीनतम बुलियन भावों के साथ करें और रियल-टाइम मार्केट अपडेट्स से जुड़े रहें।' || chr(10) || chr(10) || '*👉 आज के लाइव मार्केट भाव देखने के लिए SSR BULLION खोलें।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || ' *SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_',
    '*🌙 शुभ रात्रि | SSR BULLION*' || chr(10) || chr(10) || 'आज का व्यावसायिक दिन समाप्त हो गया है।' || chr(10) || chr(10) || 'अपने दैनिक बुलियन मार्केट अपडेट्स के लिए *SSR BULLION* पर भरोसा करने के लिए धन्यवाद। आपको एक शांतिपूर्ण रात की शुभकामनाएं, और हम कल ताज़ा मार्केट अपडेट्स के साथ आपकी सेवा करने के लिए उत्सुक हैं।' || chr(10) || chr(10) || '*👉 नवीनतम लाइव सोने और चांदी के भावों के लिए कल फिर SSR BULLION पर मिलते हैं।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_',
-   '👋 {name}, आपका स्वागत है! SSR Bullion में पंजीकरण करने के लिए धन्यवाद। अब आपको व्हाट्सएप पर लाइव भाव और दैनिक अपडेट प्राप्त होंगे।'),
+   '*✨ SSR BULLION में आपका स्वागत है*' || chr(10) || chr(10) || 'लाइव बुलियन मार्केट इंटेलिजेंस के एक विश्वसनीय प्लेटफॉर्म में आपका स्वागत है।' || chr(10) || chr(10) || '*SSR BULLION* को चुनने के लिए धन्यवाद। अब आप वास्तविक समय के सोने और चांदी के बुलियन भाव, लाइव मार्केट अपडेट्स और सटीक मूल्य निर्धारण जानकारी से जुड़ गए हैं, जो आपको पूरे कारोबारी दिन सूचित रखने के लिए डिज़ाइन की गई हैं।' || chr(10) || chr(10) || '*👉 नवीनतम लाइव बुलियन भाव देखने और अपने अनुभव की शुरुआत करने के लिए SSR BULLION खोलें।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_लाइव बुलियन दरों के लिए आपका विश्वसनीय स्रोत।_'),
   ('bengali',
    '*SSR BULLION | মার্কেট অ্যালার্ট*' || chr(10) || chr(10) || 'বুলিয়ন মার্কেট আপডেট হয়েছে।' || chr(10) || chr(10) || '*SSR Bullion* অ্যাপে সোনা ও রূপার নতুন দর দেখুন, লাইভ মার্কেট ট্রেন্ড জানুন এবং সঠিক সিদ্ধান্ত নিন।' || chr(10) || chr(10) || '👉 *সর্বশেষ দর দেখতে এখনই SSR BULLION ওপেন করুন।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_',
    '*☀️ সুপ্রভাত | SSR BULLION*' || chr(10) || chr(10) || 'আপনার আজকের দিনটি সফল ও সমৃদ্ধ হোক।' || chr(10) || chr(10) || 'সোনা ও রূপার সর্বশেষ বুলিয়ন দর দিয়ে আপনার দিন শুরু করুন এবং রিয়েল-টাইম মার্কেট আপডেটের সাথে থাকুন।' || chr(10) || chr(10) || '*👉 আজকের লাইভ মার্কেট দর দেখতে SSR BULLION ওপেন করুন।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || ' *SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_',
    '*🌙 শুভ রাত্রি | SSR BULLION*' || chr(10) || chr(10) || 'আজকের ট্রেডিং দিন শেষ হয়েছে।' || chr(10) || chr(10) || 'আপনার দৈনিক বুলিয়ন মার্কেট আপডেটের জন্য *SSR BULLION*-এর ওপর ভরসা রাখার জন্য ধন্যবাদ। আপনাকে একটি শান্তিময় রাতের শুভেচ্ছা, এবং আমরা আগামীকাল নতুন মার্কেট আপডেট নিয়ে আপনার সেবায় নিয়োজিত থাকার প্রত্যাশা করছি।' || chr(10) || chr(10) || '*👉 সর্বশেষ লাইভ সোনা ও রূপার দর দেখতে আগামীকাল আবার দেখা হবে SSR BULLION-এ।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_',
-   '👋 {name}, আপনাকে স্বাগতম! SSR Bullion-এ নিবন্ধন করার জন্য ধন্যবাদ। আপনি এখন থেকে হোয়াটসঅ্যাপে লাইভ রেট অ্যালার্ট এবং দৈনিক আপডেট পাবেন.')
+   '*✨ SSR BULLION-এ আপনাকে স্বাগতম*' || chr(10) || chr(10) || 'লাইভ বুলিয়ন মার্কেট ইন্টেলিজেন্সের একটি বিশ্বস্ত প্ল্যাটফর্মে আপনাকে স্বাগতম।' || chr(10) || chr(10) || '*SSR BULLION* বেছে নেওয়ার জন্য ধন্যবাদ। আপনি এখন রিয়েল-টাইম সোনা ও রূপার বুলিয়ন দর, লাইভ মার্কেট আপডেট এবং নির্ভুল মূল্যের তথ্যের সাথে সংযুক্ত, যা আপনাকে পুরো ট্রেডিং দিন জুড়ে অবহিত রাখতে সাহায্য করবে।' || chr(10) || chr(10) || '*👉 সর্বশেষ লাইভ বুলিয়ন দর দেখতে এবং আপনার অভিজ্ঞতা শুরু করতে SSR BULLION ওপেন করুন।*' || chr(10) || chr(10) || '━━━━━━━━━━━━━━━━━━' || chr(10) || '*SSR BULLION*' || chr(10) || '_লাইভ বুলিয়ন রেটের বিশ্বস্ত প্রতিষ্ঠান।_')
 on conflict (language) do update set
   price_update_template = EXCLUDED.price_update_template,
   morning_greeting_template = EXCLUDED.morning_greeting_template,
@@ -124,9 +124,9 @@ declare
   message_text text;
   tpl record;
 begin
-  -- Restrict Market Alert updates strictly between 10:30 AM IST and 9:00 PM IST
+  -- Restrict Market Alert updates strictly between 10:30 AM IST and 9:45 PM IST
   current_time_ist := (now() at time zone 'Asia/Kolkata')::time;
-  if current_time_ist < '10:30:00'::time or current_time_ist > '21:00:00'::time then
+  if current_time_ist < '10:30:00'::time or current_time_ist > '21:45:00'::time then
     return; -- Outside market hours, do not queue price update alerts
   end if;
 
@@ -297,10 +297,10 @@ select cron.schedule(
   $$select queue_greetings('morning');$$
 );
 
--- 3. Daily night greeting at 9:15 PM IST (3:45 PM UTC / 15:45 UTC server time)
+-- 3. Daily night greeting at 10:00 PM IST (4:30 PM UTC / 16:30 UTC server time)
 select cron.schedule(
   'night-greeting',
-  '45 15 * * *',
+  '30 16 * * *',
   $$select queue_greetings('night');$$
 );
 

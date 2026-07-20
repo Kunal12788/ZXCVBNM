@@ -482,3 +482,36 @@ The bullion market h...
 [2026-07-20T15:28:08.994Z] [INFO] Make sure Chrome is running via launch-chrome.bat and WhatsApp Web is logged in.
 [2026-07-20T15:28:09.253Z] [INFO] Test console running at http://localhost:4545
 [2026-07-20T15:28:09.261Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-20T15:39:40.924Z] [INFO] Scheduler starting. Polling every 10s.
+[2026-07-20T15:39:40.980Z] [INFO] Make sure Chrome is running via launch-chrome.bat and WhatsApp Web is logged in.
+[2026-07-20T15:39:41.177Z] [INFO] Test console running at http://localhost:4545
+[2026-07-20T15:39:41.181Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-20T15:45:05.586Z] [INFO] 3 message(s) due.
+[2026-07-20T15:45:05.597Z] [INFO] Sending to "BANJO" (attempt 1/4): *🌙 শুভ রাত্রি | SSR BULLION*
+
+আজকের ট্রেডিং দিন শ...
+[2026-07-20T15:45:07.903Z] [INFO] Searching for chat using: "6290763791"...
+[2026-07-20T15:45:10.075Z] [INFO] Found contact row matching search: "BRO 😎😎". Clicking to open chat...
+[2026-07-20T15:45:14.097Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:45:24.106Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:45:29.848Z] [WARN] Sent to "BANJO" but couldn't confirm delivery via tick icon within 5s. It likely still went through.
+[2026-07-20T15:45:31.212Z] [INFO] Sent -> BANJO (delivery_status: unconfirmed)
+[2026-07-20T15:45:31.214Z] [INFO] Sending to "PRATIKSHA" (attempt 1/4): *🌙 GOOD NIGHT | SSR BULLION*
+
+The trading day has...
+[2026-07-20T15:45:32.761Z] [INFO] Searching for chat using: "7044983628"...
+[2026-07-20T15:45:34.107Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:45:34.862Z] [INFO] Found contact row matching search: "Sister". Clicking to open chat...
+[2026-07-20T15:45:44.109Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:45:54.040Z] [WARN] Sent to "PRATIKSHA" but couldn't confirm delivery via tick icon within 5s. It likely still went through.
+[2026-07-20T15:45:54.109Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:45:55.165Z] [INFO] Sent -> PRATIKSHA (delivery_status: unconfirmed)
+[2026-07-20T15:45:55.166Z] [INFO] Sending to "KUNAL" (attempt 1/4): *🌙 शुभ रात्रि | SSR BULLION*
+
+आज का व्यावसायिक दि...
+[2026-07-20T15:45:56.455Z] [INFO] Searching for chat using: "9836282432"...
+[2026-07-20T15:45:58.514Z] [INFO] Found contact row matching search: "𝙺𝚄𝙽𝙰𝙻 😎". Clicking to open chat...
+[2026-07-20T15:46:04.112Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:46:14.123Z] [WARN] Previous tick is still processing messages. Skipping this interval check.
+[2026-07-20T15:46:17.319Z] [WARN] Sent to "KUNAL" but couldn't confirm delivery via tick icon within 5s. It likely still went through.
+[2026-07-20T15:46:18.598Z] [INFO] Sent -> KUNAL (delivery_status: unconfirmed)
