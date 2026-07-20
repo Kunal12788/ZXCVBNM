@@ -85,7 +85,7 @@ create table if not exists bullion_whatsapp_customers (
   id uuid primary key default gen_random_uuid(),
   contact_name text not null,
   phone_number text not null,               -- WhatsApp phone number (e.g. +919836282432)
-  priority text not null default 'medium',  -- 'high' (45m), 'medium' (2h), 'low' (4h)
+  priority text not null default 'medium',  -- 'high' (10m), 'medium' (15m), 'low' (4h)
   
   last_gold_price_sent numeric,             -- Tracks last gold rate notified to this customer
   last_silver_price_sent numeric,           -- Tracks last silver rate notified to this customer
@@ -140,10 +140,10 @@ begin
     
     -- Determine the time interval based on Priority (trimmed and case-insensitive for safety)
     case lower(trim(both from cust.priority))
-      when 'high' then time_interval := interval '5 minutes';
-      when 'medium' then time_interval := interval '2 hours';
+      when 'high' then time_interval := interval '10 minutes';
+      when 'medium' then time_interval := interval '15 minutes';
       when 'low' then time_interval := interval '4 hours';
-      else time_interval := interval '2 hours';
+      else time_interval := interval '15 minutes';
     end case;
 
     -- Check if the priority interval has elapsed
