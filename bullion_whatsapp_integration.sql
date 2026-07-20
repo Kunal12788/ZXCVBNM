@@ -290,10 +290,10 @@ select cron.schedule(
   'select check_bullion_price_updates();'
 );
 
--- 2. Daily morning greeting at 8:00 AM IST (local database time)
+-- 2. Daily morning greeting at 7:00 AM IST (local database time)
 select cron.schedule(
   'morning-greeting',
-  '0 8 * * *',
+  '0 7 * * *',
   $$select queue_greetings('morning');$$
 );
 

@@ -11,7 +11,40 @@ function backoffMinutes(retryCount) {
 }
 
 async function expireOldMessages() {
-  const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString(); // 30 minutes ago
+  const now = new Date();
+  const istHourStr = now.toLocaleString("en-US", { timeZone: "Asia/Kolkata", hour: "numeric", hour12: false });
+  const currentIstHour = parseInt(istHourStr, 10);
+
+  // 1. Expire Morning Greetings if app is running outside morning window (past 11:00 AM IST or before 6:00 AM IST)
+  if (currentIstHour >= 11 || currentIstHour < 6) {
+    const { data } = await supabase
+      .from("scheduled_messages")
+      .update({ status: "expired", error: "Morning greeting window expired (past 11:00 AM IST)" })
+      .eq("status", "pending")
+      .or("message.ilike.%Good Morning%,message.ilike.%शुभ प्रभात%,message.ilike.%সুপ্রভাত%")
+      .select("id");
+
+    if (data && data.length > 0) {
+      logger.info(`Expired ${data.length} pending Morning Greeting(s) outside morning window.`);
+    }
+  }
+
+  // 2. Expire Night Greetings if app is running outside night window (past 1:00 AM IST / between 1:00 AM and 9:00 PM IST)
+  if (currentIstHour >= 1 && currentIstHour < 21) {
+    const { data } = await supabase
+      .from("scheduled_messages")
+      .update({ status: "expired", error: "Night greeting window expired" })
+      .eq("status", "pending")
+      .or("message.ilike.%Good Night%,message.ilike.%शुभ रात्रि%,message.ilike.%শুভ রাত্রি%")
+      .select("id");
+
+    if (data && data.length > 0) {
+      logger.info(`Expired ${data.length} pending Night Greeting(s) outside night window.`);
+    }
+  }
+
+  // 3. Expire any general pending backlog messages older than 20 minutes
+  const cutoff = new Date(Date.now() - 20 * 60 * 1000).toISOString();
   const { data, error } = await supabase
     .from("scheduled_messages")
     .update({ status: "expired", error: "Offline backlog cleanup" })
