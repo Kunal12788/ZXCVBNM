@@ -108,6 +108,23 @@ alter table bullion_whatsapp_customers add column if not exists preferred_langua
 create index if not exists idx_whatsapp_customers_notifications 
   on bullion_whatsapp_customers (is_active, last_notification_sent_at);
 
+-- Clean up any existing duplicate phone numbers (keeps newest registration)
+delete from bullion_whatsapp_customers a
+using bullion_whatsapp_customers b
+where a.created_at < b.created_at 
+  and regexp_replace(a.phone_number, '\D', '', 'g') = regexp_replace(b.phone_number, '\D', '', 'g');
+
+-- Add UNIQUE constraint on phone_number to prevent duplicate customer entries
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'bullion_whatsapp_customers_phone_key'
+  ) then
+    alter table bullion_whatsapp_customers 
+      add constraint bullion_whatsapp_customers_phone_key unique (phone_number);
+  end if;
+end $$;
+
 -- =========================================================================
 -- 3. Live Price Check Function (Read-Only access on bullion_rates)
 -- =========================================================================
