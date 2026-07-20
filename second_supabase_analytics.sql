@@ -52,9 +52,13 @@ create table if not exists user_activity_summary (
 );
 
 -- Ensure columns exist if updating table schema
+alter table user_activity_summary add column if not exists device_type text;
 alter table user_activity_summary add column if not exists device_model_brand text;
 alter table user_activity_summary add column if not exists os_version text;
 alter table user_activity_summary add column if not exists first_opened_at timestamptz default now();
+alter table user_activity_summary add column if not exists last_device_type text;
+alter table user_activity_summary add column if not exists last_os_name text;
+alter table user_activity_summary add column if not exists last_browser_name text;
 
 -- Enable RLS and grant public access for summary
 alter table user_activity_summary enable row level security;
@@ -88,9 +92,9 @@ begin
 
   -- 2. Upsert customer summary record and increment counter
   insert into user_activity_summary (
-    phone_number, contact_name, total_app_opens, device_model_brand, os_version, device_type, first_opened_at, last_opened_at
+    phone_number, contact_name, total_app_opens, device_model_brand, os_version, device_type, last_browser_name, last_os_name, last_device_type, first_opened_at, last_opened_at
   ) values (
-    p_phone, p_name, 1, p_browser_name, p_os_name, p_device_type, now(), now()
+    p_phone, p_name, 1, p_browser_name, p_os_name, p_device_type, p_browser_name, p_os_name, p_device_type, now(), now()
   )
   on conflict (phone_number) do update set
     contact_name = coalesce(nullif(EXCLUDED.contact_name, 'Guest User'), user_activity_summary.contact_name),
@@ -98,6 +102,9 @@ begin
     device_model_brand = EXCLUDED.device_model_brand,
     os_version = EXCLUDED.os_version,
     device_type = EXCLUDED.device_type,
+    last_browser_name = EXCLUDED.last_browser_name,
+    last_os_name = EXCLUDED.last_os_name,
+    last_device_type = EXCLUDED.last_device_type,
     last_opened_at = now();
 end;
 $$;
@@ -111,10 +118,10 @@ select
   s.contact_name,
   s.phone_number,
   s.total_app_opens,
-  s.device_model_brand,
-  s.os_version,
-  s.device_type,
-  s.first_opened_at as first_opened_at_ist,
+  coalesce(s.device_model_brand, s.last_browser_name) as device_model_brand,
+  coalesce(s.os_version, s.last_os_name) as os_version,
+  coalesce(s.device_type, s.last_device_type) as device_type,
+  coalesce(s.first_opened_at, s.last_opened_at) as first_opened_at_ist,
   s.last_opened_at as last_opened_at_ist
 from user_activity_summary s
 order by s.last_opened_at desc;
