@@ -1,0 +1,5 @@
+[2026-07-21T04:45:52.489Z] [INFO] Scheduler starting. Polling every 10s.
+[2026-07-21T04:45:52.506Z] [INFO] Make sure Chrome is running via launch-chrome.bat and WhatsApp Web is logged in.
+[2026-07-21T04:45:53.160Z] [INFO] Test console running at http://localhost:4545
+[2026-07-21T04:45:53.167Z] [INFO] Supabase is NOT used here — this sends directly from what you type.
+[2026-07-21T04:45:53.871Z] [INFO] Cleaned up 4 expired pending messages from offline backlog.

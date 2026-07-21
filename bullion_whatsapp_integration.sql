@@ -167,10 +167,10 @@ begin
     
     -- Determine the time interval based on Priority (trimmed and case-insensitive for safety)
     case lower(trim(both from cust.priority))
-      when 'high' then time_interval := interval '10 minutes';
-      when 'medium' then time_interval := interval '15 minutes';
+      when 'high' then time_interval := interval '2 hours';
+      when 'medium' then time_interval := interval '3 hours';
       when 'low' then time_interval := interval '4 hours';
-      else time_interval := interval '15 minutes';
+      else time_interval := interval '3 hours';
     end case;
 
     -- Check if the priority interval has elapsed (sends unconditionally on interval schedule)
